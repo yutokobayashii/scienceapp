@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "949003670870",
+    "project_id": "science-2d591",
+    "storage_bucket": "science-2d591.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:949003670870:android:16985186dd524b996ef2f7",
+        "android_client_info": {
+          "package_name": "com.example.science"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "949003670870-i7l6d308ndscmto96a7avp35kojfqpjo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtx5Mj70ac9lSZE46AdmIxXOree8y5UWQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "949003670870-i7l6d308ndscmto96a7avp35kojfqpjo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "949003670870-32qsis4j7r8op5fno9ealvp0qfbk4o1f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.science"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
