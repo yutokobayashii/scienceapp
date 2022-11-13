@@ -3,9 +3,13 @@ import 'package:science/practicemode.dart';
 import 'package:science/testmode.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'firebasequestion.dart';
 
 
 class start_file extends StatelessWidget {
+
+
 
   start_file(this.name);
   String name;
@@ -68,6 +72,8 @@ class start_file extends StatelessWidget {
                   side: const BorderSide(color: Colors.green),
                 ),
                 onPressed: () {
+                 // firebaselogic();
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -79,47 +85,44 @@ class start_file extends StatelessWidget {
             ),
 
 
-    Container(
-          height: double.infinity,
-          alignment: Alignment.topCenter,
-          //1
-          child: StreamBuilder<QuerySnapshot>(
-            //2
-            stream: FirebaseFirestore.instance
-                .collection('dream')
-                .orderBy('createdAt')
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return const Text('エラーが発生しました');
-              }
-              if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              //3
-              final list = snapshot.requireData.docs
-                  .map<String>((DocumentSnapshot document) {
-                final documentData =
-                document.data()! as Map<String, dynamic>;
-                return documentData['content']! as String;
-              }).toList();
 
-              final reverseList = list.reversed.toList();
+//
+//             SizedBox(
+//               width: 130,
+//               height: 40,
+//               child: OutlinedButton(
+//
+//                 child: const Text('firebase'),
+//                 style: OutlinedButton.styleFrom(
+//                   primary: Colors.black,
+//                   shape: const StadiumBorder(),
+//                   side: const BorderSide(color: Colors.green),
+//                 ),
+//                 onPressed: () async {
+//                   final date =
+//                   DateTime.now().toLocal().toIso8601String(); // 現在の日時
+//                  // final email = widget.user.email; // AddPostPage のデータを参照
+//                   // 投稿メッセージ用ドキュメント作成
+//
+//
+//                   await FirebaseFirestore.instance
+//                       .collection('tests') // コレクションID指定
+//                       .doc('9KybUiEkqo6hoMUJy1wo') // ドキュメントID自動生成
+//                       .set({
+//
+//                     'date': date
+//
+//                   });
+//
+//
+//
+//                   // 1つ前の画面に戻る
+//                   Navigator.of(context).pop();
+//                 },
+//               ),
+//             ),
 
-              return ListView.builder(
-                itemCount: reverseList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Center(
-                    child: Text(
-                      reverseList[index],
-                      style: const TextStyle(fontSize: 20),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-    ),
+//
 
           ],
         ),

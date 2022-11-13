@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:science/first_page.dart';
 import 'package:science/second_page.dart';
+import 'package:science/welcome_screen.dart';
 import 'third_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -13,10 +14,14 @@ void main() async {
   );
 
   runApp(const MyApp());
+
+
+
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
 
   // This widget is the root of your application.
   @override
@@ -28,6 +33,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
+
+      // initialRoute: 'welcome_screen',
+      // routes: {
+      //   'welcome_screen':(context) => welcome_screen(),
+     // },
     );
   }
 }
@@ -44,6 +54,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+
+
 
   var _selectIndex = 0;
 
@@ -80,6 +93,8 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.settings),
             label: '設定',
           ),
+
+
         ],
         currentIndex: _selectIndex,
         onTap: _onTapItem,

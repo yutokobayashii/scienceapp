@@ -3,64 +3,145 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:science/start_file.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
-class firstPage extends StatelessWidget {
+var SNForfirstpage;
+var subjectNumberForfirstpage;
+List<String> subjectListForFirstPage = [];
+//
+// void firebaseSubjectLogic() async {
+//   SNForfirstpage = await FirebaseFirestore.instance.collection('単元').get();
+//
+//
+//   subjectNumberForfirstpage = SNForfirstpage.docs.length;
+//
+//   for (int a = 1; a <= subjectNumberForfirstpage; a++) {
+//     final subject = await FirebaseFirestore.instance.collection(
+//         '単元').doc('単元${a}').get();
+//     //単元の変数をクラウドにある分だけ作成。
+//
+//
+//       subjectListForFirstPage.add(subject['単元${a}']);
+//
+//
+//
+//   }
+// }
+
+
+class firstPage extends StatefulWidget {
 
 
   const firstPage({Key? key}) : super(key: key);
 
   @override
+  State<firstPage> createState() => _firstPageState();
+
+
+
+
+
+    }
+
+
+class _firstPageState extends State<firstPage> {
+
+
+
+  void firebaseSubjectLogic() async {
+    SNForfirstpage = await FirebaseFirestore.instance.collection('単元').get();
+
+
+    subjectNumberForfirstpage = SNForfirstpage.docs.length;
+
+    for (int a = 1; a <= subjectNumberForfirstpage; a++) {
+      final subject = await FirebaseFirestore.instance.collection(
+          '単元').doc('単元${a}').get();
+      //単元の変数をクラウドにある分だけ作成。
+
+
+      setState(() {
+        subjectListForFirstPage.add(subject['単元${a}']);
+      });
+
+
+
+
+
+    }
+  }
+
+
+
+  @override
+  void initState() {
+    super.initState();
+
+
+    firebaseSubjectLogic();
+
+    print('subjectNumberForfirstpage===${subjectNumberForfirstpage}');
+    print('subjectListForFirstPage===${subjectListForFirstPage}');
+//呼び出す場所が悪い。アプリを起動したタイミングで呼び出しても良いのでは？
+  }
+
+
+
+
+  @override
   Widget build(BuildContext context) {
 
-
-
-
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-
-          title: Text('高校理科問題集'),
-          centerTitle: true,
-
-          elevation: 1,
-          flexibleSpace: Image.network(// <-- ここで指定します。
-          'https://images.unsplash.com/photo-1513407030348-c983a97b98d8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80',
-          fit: BoxFit.cover,
-          ),
-          toolbarHeight: 100,// <-- ここで高さを指定してあげるとまた雰囲気が変わります
-          backgroundColor: Colors.transparent,
-
-        ),
-          body: ListView(
-             children: [
-
-               for(var i = 1; i < 11; i++)
-
-                 GestureDetector(
-                     child: menuItem("単元${i}",Icon(Icons.done_all_sharp),context),
-                     onTap: () {
-                       Navigator.push(
-                         context,
-                         MaterialPageRoute(
-                           builder: (context) => start_file("単元${i}"),
-                         ),
-                       );
-                     }
-                 ),
-
-
-               ]
-
-          ),
-      ),
-    );
-
-
-
-
+    return buildMaterialApp(context);
 
 }
+
+
+
+
+
+  MaterialApp buildMaterialApp(BuildContext context) {
+    return MaterialApp(
+    home: Scaffold(
+      appBar: AppBar(
+
+        title: Text('高校理科問題集'),
+        centerTitle: true,
+
+        elevation: 1,
+        flexibleSpace: Image.network(// <-- ここで指定します。
+        'https://images.unsplash.com/photo-1513407030348-c983a97b98d8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80',
+        fit: BoxFit.cover,
+        ),
+        toolbarHeight: 100,// <-- ここで高さを指定してあげるとまた雰囲気が変わります
+        backgroundColor: Colors.transparent,
+
+      ),
+        body: ListView(
+           children: [
+
+             for(var i = 0; i  <subjectNumberForfirstpage ; i++)
+
+               GestureDetector(
+                   child: menuItem(subjectListForFirstPage[i],Icon(Icons.done_all_sharp),context),
+                   onTap: () {
+                     Navigator.push(
+                       context,
+                       MaterialPageRoute(
+                         builder: (context) => start_file(subjectListForFirstPage[i]),
+                       ),
+                     );
+                   }
+               ),
+
+
+             ]
+
+        ),
+    ),
+  );
+  }
+
   Widget menuItem(String title, Icon icon,BuildContext context) {
     return SizedBox(
       height: 70,

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'firebase_options.dart';
+
 class questions{
 
 String questionText = "";
@@ -12,14 +16,19 @@ questions( String q, String a ) {
 
 }
 
+
+
 }
 
 // todo; クラスを二つに分ける。１、問題と解答　解答四つ
 int questionNumber = 0;
+
+int titleNumber = questionNumber + 1;
 // questions q1 = questions(q: '小林は天才でしょうか？',a: 'はい');
 
 List<questions> questionBank = [
   questions('小林は天才でしょうか？1','はい1'),
+
   questions('小林は天才でしょうか？2','はい2'),
   questions('小林は天才でしょうか？3','はい3'),
   questions('小林は天才でしょうか？4','はい4'),
