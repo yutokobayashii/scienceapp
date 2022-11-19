@@ -2,9 +2,13 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:science/start_file.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:science/testmode.dart';
+import 'dart:core';
+import 'dart:async';
+
+import 'package:science/title_list_page.dart';
 
 var SNForfirstpage;
 var subjectNumberForfirstpage;
@@ -41,7 +45,6 @@ class firstPage extends StatefulWidget {
 
 
 
-
     }
 
 
@@ -49,7 +52,10 @@ class _firstPageState extends State<firstPage> {
 
 
 
+
   void firebaseSubjectLogic() async {
+
+
     SNForfirstpage = await FirebaseFirestore.instance.collection('単元').get();
 
 
@@ -117,26 +123,49 @@ class _firstPageState extends State<firstPage> {
         backgroundColor: Colors.transparent,
 
       ),
-        body: ListView(
-           children: [
+        body:FutureBuilder(
+          future: FirebaseFirestore.instance.collection('単元').get(),
+          builder: (context, snapshot) {
+            // 取得が完了していないときに表示するWidget
+            if (snapshot.connectionState != ConnectionState.done) {
+              return const CircularProgressIndicator();
+            }
 
-             for(var i = 0; i  <subjectNumberForfirstpage ; i++)
+            // エラー時に表示するWidget
+            if (snapshot.hasError) {
+              print(snapshot.error);
+              return Text('エラー');
+            }
 
-               GestureDetector(
-                   child: menuItem(subjectListForFirstPage[i],Icon(Icons.done_all_sharp),context),
-                   onTap: () {
-                     Navigator.push(
-                       context,
-                       MaterialPageRoute(
-                         builder: (context) => start_file(subjectListForFirstPage[i]),
-                       ),
-                     );
-                   }
-               ),
+            // データが取得できなかったときに表示するWidget
+            if (!snapshot.hasData) {
+              return Text('データがない');
+            }
+
+            // 取得したデータを表示するWidget
+            return ListView(
+                children: [
+
+                  for(var i = 0; i  < subjectNumberForfirstpage ; i++)
+
+                    GestureDetector(
+                        child: menuItem(subjectListForFirstPage[i] ,Icon(Icons.done_all_sharp),context),
+                        //ここがrangeerror起きてる。
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => testmode(subjectListForFirstPage[i]),
+                            ),
+                          );
+                        }
+                    ),
 
 
-             ]
+                ]
 
+            );
+          },
         ),
     ),
   );
@@ -157,7 +186,7 @@ class _firstPageState extends State<firstPage> {
                 child:icon,
               ),
               Text(
-                title,
+                title ,
                 style: TextStyle(
                     color:Colors.black,
                     fontSize: 18.0
@@ -170,3 +199,5 @@ class _firstPageState extends State<firstPage> {
     );
   }
 }
+
+

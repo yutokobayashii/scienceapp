@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:science/main.dart';
 import 'package:science/questions.dart';
+import 'package:science/testLast_page.dart';
 import 'testmode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -37,7 +38,7 @@ print(userScore.toString());
           '今回の点数は${userScore}点です。',
           textAlign: TextAlign.center),
       content: Text(
-          '今回の結果を保存しますか？'
+          'テストの解説を表示しますか？'
           ,textAlign: TextAlign.center),
       actions: [
         Row(
@@ -48,7 +49,7 @@ print(userScore.toString());
                 //○だった時の処理を記載
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MyApp()),
+                  MaterialPageRoute(builder: (context) => testLast_page()),
 
                 );
                 questionNumber = 0;

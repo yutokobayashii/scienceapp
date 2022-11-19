@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'answerWidget.dart';
+import 'main.dart';
 import 'questions.dart';
 import 'dart:math';
 import 'dialog.dart';
@@ -9,10 +10,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firebase_options.dart';
 import 'firebasequestion.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'first_page.dart';
+
+var titleHolder;
+
 
 class testmode extends StatefulWidget {
   testmode(this.name);
-  String name;
+
+String name;
+
+
+
 
 
 
@@ -34,7 +43,40 @@ class _testmodeState extends State<testmode> {
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.name}/テストモード'),
-        // leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
+         leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () {
+
+
+           Navigator.push(
+             context,
+             MaterialPageRoute(builder: (context) => MyApp()),
+
+           );
+
+
+           subjectList = [];
+           questionList = [];
+           answerList1 = [];
+           answerList2 = [];
+           answerList3 = [];
+           answerList4 = [];
+           correctAnswerList = [];
+
+            SLN = 0;
+            QLN = 0;
+            ALN = 0;
+
+            presentSubject = '読み込み中';
+            presentQuestion = '読み込み中';
+            presentAnswer1 = '読み込み中';
+            presentAnswer2 = '読み込み中';
+            presentAnswer3 = '読み込み中';
+            presentAnswer4 = '読み込み中';
+
+
+
+
+
+         }),
 
         centerTitle: true,
         // actions: [
@@ -57,15 +99,26 @@ class _testmodeState extends State<testmode> {
 
 class quizView extends StatefulWidget {
 
-// quizView(this.user);
-//
-// final User user;
+
 
   @override
   State<quizView> createState() => quizViewState();
 }
 
 class quizViewState extends State<quizView> {
+
+
+
+  _getTitle() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // 以下の「counter」がキー名。見つからなければ０を返す
+    setState(() {
+      titleHolder = prefs.getString('title') ?? 'nil error';
+    });
+
+
+    print('titleHolder=====${titleHolder}' ?? 'nil');
+  }
 
 
 
@@ -76,88 +129,259 @@ class quizViewState extends State<quizView> {
 
 
 
-
-
-    final SN = await FirebaseFirestore.instance.collection('単元').get();
-
+    //
+    final SN = await FirebaseFirestore.instance.collection('項目').get();
+    // subjectList.add(SN['項目']);
 
     final int subjectNumber = SN.docs.length;
 
+
     print('subjectNumber===${subjectNumber}');
 
-    for (int a = 1; a<=subjectNumber; a++) {
 
-      final  QN = await FirebaseFirestore.instance.collection(
-          '単元').doc('単元${a}').collection('問題').get();
-      final int questionNumberForRecord = QN.docs.length;
-      //問題の数を記録
-
-      print('questionNumberForRecord===${questionNumberForRecord}');
+    for (int i = 0; i < subjectNumber; i ++) {
       final subject = await FirebaseFirestore.instance.collection(
-          '単元').doc('単元${a}').get();
+          '項目').doc('項目${i}').get();
       //単元の変数をクラウドにある分だけ作成。
-       setState(() {
+      setState(() {
 
-      subjectList.add(subject['単元${a}']);
-      SLN = subjectList.length;
-        });
+        subjectList.add(subject['項目']);
+        SLN = subjectList.length;
+      });
 
-      print('subjectList===${subjectList}');
+      print('subjectList${subjectList[i]}');
+
+
+      if (titleHolder == subjectList[i]) {
+
+        print('success');
+
+        //ここに問題のロジックを書いていけばいいはず。
+         final  QN = await FirebaseFirestore.instance.collection(
+          '項目').doc('項目${i}').collection('問題').get();
+         final int questionNumberForRecord = QN.docs.length;
+
 
       for (int b = 1; b<=questionNumberForRecord; b++) {
         //答えの数を記録
         final AN = await FirebaseFirestore.instance.collection(
-            '単元').doc('単元${a}').collection('問題').doc('問題${b}').collection('答え').get();
+            '項目').doc('項目${i}').collection('問題').doc('問題${b}')
+            .collection('答え')
+            .get();
         final int answerNumber = AN.docs.length;
 
         print('answerNumber===${answerNumber}');
         //問題の変数をクラウドにある分だけ作成。
         final question = await FirebaseFirestore.instance.collection(
-            '単元').doc('単元${a}').collection('問題').doc('問題${b}').get();
+            '項目').doc('項目${i}').collection('問題').doc('問題${b}').get();
 
+        setState(() {
 
-          setState(() {
-        print('questionnumber===${questionNumber}');
         questionList.add(question['問題${b}']);
         correctAnswerList.add(question['正解${b}']);
+        commentList.add(question['解説${b}']);
         QLN = questionList.length;
         presentQuestion = questionList[questionNumber];//questionNumber = 1を代入している。
 
         print('presentQuestion---${presentQuestion}');
 
+
            });
-          print('QLN===${QLN}');
+
+
+        print('QLN===${QLN}');
         print('questionList===${questionList}');
         print('correctAnswerList===${correctAnswerList}');
         for (int c = 1; c<=answerNumber; c++) {
           //答えの変数をクラウドにある分だけ作成。
           final answer = await FirebaseFirestore.instance.collection(
-              '単元').doc('単元${a}').collection('問題').doc('問題${b}').collection('答え').doc('答え${c}').get();
-
+              '項目').doc('項目${i}').collection('問題').doc('問題${b}').collection('答え').doc('答え${c}').get();
+//c+1が４で割り切れるかどうかで場合分け
             setState(() {
 
-          answerList.add(answer['答え${c}']);
-          ALN = answerList.length;
+              if (c == 1 || c == 1 + (4*c)) {
+                answerList1.add(answer['答え${c}']);
+
+                ALN = answerList1.length;
+
+
+              }
+
+              else if (c == 2 || c == 2 + (4*c)) {
+                answerList2.add(answer['答え${c}']);
+
+              }
+
+              else if (c == 3 || c == 3 + (4*c)) {
+                answerList3.add(answer['答え${c}']);
+
+              }
+
+              else  if (c == 4 || c == 4 + (4*c)) {
+                answerList4.add(answer['答え${c}']);
+
+              }
+
+              else{
+                print('答えの取得でエラーが発生しました。');
+              }
+
 
                });
-        }
+        }//for答え
 
-        presentAnswer1 = answerList[0];
-        presentAnswer2 = answerList[1];
-         presentAnswer3 = answerList[2];
-         presentAnswer4 = answerList[3];
-        print('answerList===${answerList}');
+        presentAnswer1 = answerList1[questionNumber];
+        presentAnswer2 = answerList2[questionNumber];
+         presentAnswer3 = answerList3[questionNumber];
+         presentAnswer4 = answerList4[questionNumber];
+        print('answerList===${answerList1}');
         print('presentAnswer1${presentAnswer1}');
         print('presentAnswer2${presentAnswer2}');
         print('presentAnswer3${presentAnswer3}');
         print('presentAnswer4${presentAnswer4}');
+        print('answerList2===${answerList2}');
 
 
 
 
-      }//問題for
 
-    }//単元for
+
+      }//for問題
+
+
+
+
+
+      } else {
+
+
+
+        print('errorrrrrrrrr');
+      }
+
+
+    }//for項目
+
+
+
+
+
+
+//     for (int a = 1; a<=subjectNumber; a++) {
+//
+//       final  QN = await FirebaseFirestore.instance.collection(
+//           '項目').doc('項目${a}').collection('問題').get();
+//       final int questionNumberForRecord = QN.docs.length;
+//       //問題の数を記録
+//
+//       print('questionNumberForRecord===${questionNumberForRecord}');
+//       final subject = await FirebaseFirestore.instance.collection(
+//           '項目').doc('項目${a}').get();
+//       //単元の変数をクラウドにある分だけ作成。
+//        setState(() {
+//
+//       subjectList.add(subject['項目${a}']);
+//       SLN = subjectList.length;
+//         });
+//
+//
+//       if (name1 == subjectList[a-1]) {
+//
+//         print('success');
+//       } else {
+//
+//
+//
+//         print('errorrrrrrrrr');
+//       }
+//
+//
+//
+//
+//       print('subjectList===${subjectList}');
+//
+//
+//
+//
+//       for (int b = 1; b<=questionNumberForRecord; b++) {
+//         //答えの数を記録
+//         final AN = await FirebaseFirestore.instance.collection(
+//             '項目').doc('項目${a}').collection('問題').doc('問題${b}').collection('答え').get();
+//         final int answerNumber = AN.docs.length;
+//
+//         print('answerNumber===${answerNumber}');
+//         //問題の変数をクラウドにある分だけ作成。
+//         final question = await FirebaseFirestore.instance.collection(
+//             '項目').doc('項目${a}').collection('問題').doc('問題${b}').get();
+//
+//
+//           setState(() {
+//         print('questionnumber===${questionNumber}');
+//         questionList.add(question['問題${b}']);
+//         correctAnswerList.add(question['正解${b}']);
+//         QLN = questionList.length;
+//         presentQuestion = questionList[questionNumber];//questionNumber = 1を代入している。
+//
+//         print('presentQuestion---${presentQuestion}');
+//
+//            });
+//           print('QLN===${QLN}');
+//         print('questionList===${questionList}');
+//         print('correctAnswerList===${correctAnswerList}');
+//         for (int c = 1; c<=answerNumber; c++) {
+//           //答えの変数をクラウドにある分だけ作成。
+//           final answer = await FirebaseFirestore.instance.collection(
+//               '単元').doc('単元${a}').collection('問題').doc('問題${b}').collection('答え').doc('答え${c}').get();
+// //c+1が４で割り切れるかどうかで場合分け
+//             setState(() {
+//
+//               if (c == 1 || c == 1 + (4*c)) {
+//                 answerList1.add(answer['答え${c}']);
+//
+//                 ALN = answerList1.length;
+//
+//
+//               }
+//
+//               else if (c == 2 || c == 2 + (4*c)) {
+//                 answerList2.add(answer['答え${c}']);
+//
+//               }
+//
+//               else if (c == 3 || c == 3 + (4*c)) {
+//                 answerList3.add(answer['答え${c}']);
+//
+//               }
+//
+//               else  if (c == 4 || c == 4 + (4*c)) {
+//                 answerList4.add(answer['答え${c}']);
+//
+//               }
+//
+//               else{
+//                 print('答えの取得でエラーが発生しました。');
+//               }
+//
+//
+//                });
+//         }
+//
+//         presentAnswer1 = answerList1[questionNumber];
+//         presentAnswer2 = answerList2[questionNumber];
+//          presentAnswer3 = answerList3[questionNumber];
+//          presentAnswer4 = answerList4[questionNumber];
+//         print('answerList===${answerList1}');
+//         print('presentAnswer1${presentAnswer1}');
+//         print('presentAnswer2${presentAnswer2}');
+//         print('presentAnswer3${presentAnswer3}');
+//         print('presentAnswer4${presentAnswer4}');
+//         print('answerList2===${answerList2}');
+//
+//
+//
+//       }//問題for
+//
+//     }//単元for
 
 
   }
@@ -166,7 +390,7 @@ class quizViewState extends State<quizView> {
   void initState() {
     super.initState();
 
-
+    _getTitle();
     firebaselogic();
 //呼び出す場所が悪い。アプリを起動したタイミングで呼び出しても良いのでは？
   }
@@ -186,10 +410,17 @@ class quizViewState extends State<quizView> {
   void ontapped(String text,String text1) {
 //タップした際の挙動。
 //オンタップ時に不具合あり。
+    selectedAnswerList.add(text);
     if (questionNumber < QLN -1){
   setState(() {
+
     questionNumber++;
   presentQuestion = questionList[questionNumber];//二回目以降の代入ロジックを担当。
+
+    presentAnswer1 = answerList1[questionNumber];
+    presentAnswer2 = answerList2[questionNumber];
+    presentAnswer3 = answerList3[questionNumber];
+    presentAnswer4 = answerList4[questionNumber];
   });
 } else {
   print('stop test');
@@ -200,6 +431,14 @@ class quizViewState extends State<quizView> {
       });
       saveData();
       print(truescorekeeper.length.toString());
+   // subjectList = [];
+   // questionList = [];
+   // answerList1 = [];
+   // answerList2 = [];
+   // answerList3 = [];
+   // answerList4 = [];
+   // correctAnswerList = [];
+   // subjectListForFirstPage = [];
 }
 
     if (text == text1) {

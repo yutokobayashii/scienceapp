@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:science/first_page.dart';
 import 'package:science/second_page.dart';
+import 'package:science/title_list_page.dart';
 import 'package:science/welcome_screen.dart';
 import 'third_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -67,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   var _pages = <Widget>[
-   firstPage(),
+    UserInformation(),
    second_page(),
     third_page(),
   ];
