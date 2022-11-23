@@ -18,7 +18,7 @@ class _UserInformationState extends State<UserInformation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      //backgroundColor: Colors.cyan[50],
       appBar: AppBar(
         title: Text('問題集'),
         // leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
@@ -57,7 +57,17 @@ class _UserInformationState extends State<UserInformation> {
               Map<String, dynamic> data =
               document.data()! as Map<String, dynamic>;
               return ListTile(
-                title: Text(data['項目']),
+                title: Text(data['項目']
+                  ,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,
+                    decoration: TextDecoration.underline,
+
+
+                  ),
+                ),
+                  subtitle:  Text(data['説明']),
+                  leading:  Icon(Icons.check,color: Colors.cyan,),
+
                   onTap: () {
 
                     saveData1() async {

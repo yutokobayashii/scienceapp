@@ -6,7 +6,7 @@ import 'package:science/welcome_screen.dart';
 import 'third_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-
+import 'title_list_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
   var _pages = <Widget>[
     UserInformation(),
    second_page(),
-    third_page(),
+    //third_page(),
   ];
 
 
@@ -90,10 +90,10 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.reorder),
             label: '記録',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: '設定',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.settings),
+          //   label: '設定',
+          // ),
 
 
         ],

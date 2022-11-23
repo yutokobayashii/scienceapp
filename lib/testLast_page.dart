@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:science/firebasequestion.dart';
+import 'package:science/questions.dart';
 
 import 'first_page.dart';
 import 'main.dart';
@@ -33,17 +34,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.cyan[50],
       appBar: AppBar(
         title: Text('解説'),
         // leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
@@ -55,6 +51,17 @@ class _MyHomePageState extends State<MyHomePage> {
     MaterialPageRoute(builder: (context) => MyApp()),
 
     );
+
+    SLN = 0;
+    QLN = 0;
+    ALN = 0;
+
+    presentSubject = '';
+    presentQuestion = '';
+    presentAnswer1 = '読み込み中';
+    presentAnswer2 = '読み込み中';
+    presentAnswer3 = '読み込み中';
+    presentAnswer4 = '読み込み中';
     subjectList = [];
     questionList = [];
     answerList1 = [];
@@ -65,7 +72,11 @@ class _MyHomePageState extends State<MyHomePage> {
     subjectListForFirstPage = [];
     selectedAnswerList = [];
     commentList = [];
-
+    getBoolFromImageFlagList = [];
+    getBoolFromImageFlag = false;
+    getImageList = [];
+    titleNumber = 1;
+    questionNumber = 0;
     }
     ),
 
@@ -82,78 +93,97 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.transparent,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
 
-            for (int i = 0; i<QLN; i++)...{
+              for (int i = 0; i<QLN; i++)...{
 
 
-              SizedBox(
-                height: 30,
-              ),
+                SizedBox(
+                  height: 30,
+                ),
 
-              Card(
-                color: Colors.white70,
-                child: InkWell(
-                  splashColor: Colors.cyan,
-                  onTap: () {
-                    debugPrint('Card taped');
-                  },
-                  child: SizedBox(
-                    width: 300,
-                    height: 200,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Text('Q${i+1}',
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
+                Card(
+                  color: Colors.white,
+                  child: InkWell(
+                    splashColor: Colors.cyan,
+                    onTap: () {
+                      debugPrint('Card taped');
+                    },
+                    child: SizedBox(
+                      width: double.infinity ,
+                      height:getBoolFromImageFlagList[i] ? 400 : 300,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Text('Q${i+1}',
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
 
-                        Container(
-                          width: double.infinity,
-                          child: Text('問題：${questionList[i]}',
-                            textAlign: TextAlign.left,),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
 
-                        Container(
-                          width: double.infinity,
-                          child: Text('あなたの回答：${selectedAnswerList[i]}',
-                            textAlign: TextAlign.left,),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          child: Text('正解：${correctAnswerList[i]}',
-                            textAlign: TextAlign.left,),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          child: Text('解説：${commentList[i]}',
-                            textAlign: TextAlign.left,),
-                        ),
-                      ],
+
+
+                          getBoolFromImageFlagList[i] ? Container(
+                              width: 200,
+                              height: 185,
+                              child: Image.network(getImageList[i])) :  SizedBox(
+                            height: 15,
+                          ),
+
+                          SizedBox(
+                            height: 15,
+                          ),
+
+                          Container(
+                            width: double.infinity,
+                            child: Text('問題：${questionList[i]}',
+                              textAlign: TextAlign.left,),
+                          ),
+
+                          SizedBox(
+                            height: 15,
+                          ),
+
+
+                          Container(
+                            width: double.infinity,
+                            child: Text('あなたの回答：${selectedAnswerList[i]}',
+                              textAlign: TextAlign.left,),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            child: Text('正解：${correctAnswerList[i]}',
+                              textAlign: TextAlign.left,),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            child: Text('解説：${commentList[i]}',
+                              textAlign: TextAlign.left,),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-            },
 
-          ],
+              },
+
+            ],
+          ),
         ),
       ),
 
