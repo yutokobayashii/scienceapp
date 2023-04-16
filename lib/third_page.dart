@@ -9,7 +9,7 @@ class third_page extends StatelessWidget {
         home: Scaffold(
             appBar: AppBar(
 
-              title: Text('高校理科問題集'),
+              title: const Text('高校理科問題集'),
               centerTitle: true,
 
               elevation: 1,
@@ -21,7 +21,7 @@ class third_page extends StatelessWidget {
               backgroundColor: Colors.transparent,
 
             ),
-            body: Text('test'),
+            body: const Text('test'),
         )
     );
   }

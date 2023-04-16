@@ -10,7 +10,7 @@ import 'main.dart';
 
 
 
-class testLast_page extends StatelessWidget {
+class wrongAnswerRecord extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -45,40 +45,15 @@ class _MyHomePageState extends State<MyHomePage> {
         leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () {
 
 
-    Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const MyApp()),
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const MyApp()),
 
-    );
+          );
 
-    sLN = 0;
-    QLN = 0;
-    ALN = 0;
 
-    presentSubject = '';
-    presentQuestion = '';
-    presentComment = '';
-    presentAnswer1 = '読み込み中';
-    presentAnswer2 = '読み込み中';
-    presentAnswer3 = '読み込み中';
-    presentAnswer4 = '読み込み中';
-    subjectList = [];
-    questionList = [];
-    answerList1 = [];
-    answerList2 = [];
-    answerList3 = [];
-    answerList4 = [];
-    correctAnswerList = [];
-    subjectListForFirstPage = [];
-    selectedAnswerList = [];
-    commentList = [];
-    getBoolFromImageFlagList = [];
-    getBoolFromImageFlag = false;
-    getImageList = [];
-    titleNumber = 1;
-    questionNumber = 0;
-    }
-    ),
+        }
+        ),
 
         centerTitle: true,
         // actions: [
@@ -98,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
 
-              for (int i = 0; i<QLN; i++)...{
+              for (int i = 0; i<wrongAnswerList.length; i++)...{
 
 
                 const SizedBox(

@@ -1,8 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:science/testmode.dart';
+import 'package:science/wrongAnserRecord.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class wrongAnswer extends StatelessWidget {
-  const wrongAnswer({Key? key}) : super(key: key);
+   wrongAnswer({Key? key}) : super(key: key);
+
+  final Stream<QuerySnapshot> _usersStream =
+  FirebaseFirestore.instance.collection('誤回答記録').snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -10,10 +17,10 @@ class wrongAnswer extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
         leading: IconButton(
-            icon: Icon(Icons.arrow_back_outlined), onPressed: () {
+            icon: const Icon(Icons.arrow_back_outlined), onPressed: () {
         Navigator.of(context).pop();
          }),
-         title: Text('高校理科問題集'),
+         title: const Text('誤答集'),
          centerTitle: true,
 
        elevation: 1,
@@ -26,20 +33,65 @@ class wrongAnswer extends StatelessWidget {
           backgroundColor: Colors.transparent,
 
          ),
-        body:  GridView.count(
-          shrinkWrap: true,
-                    crossAxisCount: 1,
-                    childAspectRatio: 2,
-                    //sizeをここで調整する。
-                    children: <Widget>[
-                      answerWidgetForWrong(),
-                      answerWidgetForWrong(),
-                      answerWidgetForWrong(),
-                      answerWidgetForWrong(),
+        body: StreamBuilder<QuerySnapshot>(
+          stream: _usersStream,
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return const Text('Something went wrong');
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Text("Loading");
+            }
+            if (snapshot.data == null) {
+              return const Text("null error");
+            }
+
+            return ListView(
+              children: snapshot.data!.docs
+                  .map((DocumentSnapshot document) {
+                Map<String, dynamic> data =
+                document.data()! as Map<String, dynamic>;
+                return ListTile(
+                    title: Text(data['項目']
+                      ,
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20,
+                        decoration: TextDecoration.underline,
 
 
-                    ]
-                )
+                      ),
+                    ),
+                    subtitle:  Text(data['実施日時']),
+                    leading:  const Icon(Icons.check,color: Colors.cyan,),
+
+                    onTap: () {
+
+                      // saveData1() async {
+                      //
+                      //   SharedPreferences pref = await SharedPreferences.getInstance();
+                      //
+                      //   pref.setString("title",data['項目'] );
+                      //
+                      // }
+                      //
+                      // saveData1();
+                      //
+                      //
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => wrongAnswerRecord(),
+                      //   ),
+                      // );
+                    }
+
+                );
+              })
+                  .toList()
+                  .cast(),
+            );
+          },
+        ),
             )
         );
 
@@ -52,26 +104,4 @@ class wrongAnswer extends StatelessWidget {
 
 }
 
-class answerWidgetForWrong extends StatelessWidget {
-  const answerWidgetForWrong({
-    Key? key,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          Text("実施日：xx年xx月xx日"),
-          Text("Q1:text"),
-          Text("あなたの回答:text"),
-          Text("正解:text"),
-          Text("解説:text"),
-
-
-        ],
-      ),
-    );
-
-  }
-}

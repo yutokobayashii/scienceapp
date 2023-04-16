@@ -9,10 +9,10 @@ class record extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              icon: Icon(Icons.arrow_back_outlined), onPressed: () {
+              icon: const Icon(Icons.arrow_back_outlined), onPressed: () {
             Navigator.of(context).pop();
           }),
-          title: Text('高校理科問題集'),
+          title: const Text('高校理科問題集'),
           centerTitle: true,
 
           elevation: 1,

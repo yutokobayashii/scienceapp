@@ -19,7 +19,7 @@ class _answerWidgetState extends State<answerWidget> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 300,
-      height: 60,
+      height: 45,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),

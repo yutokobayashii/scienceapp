@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:science/first_page.dart';
+import 'package:science/setting.dart';
 import 'package:science/second_page.dart';
+import 'package:science/start_record.dart';
 import 'package:science/title_list_page.dart';
-import 'package:science/welcome_screen.dart';
 import 'third_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -67,10 +68,10 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  var _pages = <Widget>[
+  final _pages = <Widget>[
     UserInformation(),
-   second_page(),
-    //third_page(),
+    start_record(),
+      const settingWidget(),
   ];
 
 
@@ -81,19 +82,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
       body: _pages[_selectIndex],
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'クイズ',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.reorder),
+            icon:Icon(
+              Icons.history,
+            ),
             label: '記録',
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.settings),
-          //   label: '設定',
-          // ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: '設定',
+          ),
+
 
 
         ],

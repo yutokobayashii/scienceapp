@@ -12,7 +12,7 @@ class start_record extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('test'),
+        title: const Text('記録'),
         // leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
 
         centerTitle: true,
@@ -32,7 +32,7 @@ class start_record extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             GestureDetector(
-                child: buildSizedBox('グラフ',
+                child: buildSizedBox('正答率グラフ',
                 ),
               onTap: (){
                 Navigator.push(

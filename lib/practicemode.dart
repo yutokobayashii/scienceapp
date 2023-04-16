@@ -9,7 +9,7 @@ class practicemode extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${name}/練習モード'),
+        title: Text('$name/練習モード'),
         // leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
 
         centerTitle: true,
@@ -24,7 +24,7 @@ class practicemode extends StatelessWidget {
         toolbarHeight: 100,// <-- ここで高さを指定してあげるとまた雰囲気が変わります
         backgroundColor: Colors.transparent,
       ),
-      body: Center(
+      body: const Center(
         child: Text('hello'),
       ),
     );

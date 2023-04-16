@@ -6,12 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:science/testmode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserInformation extends StatefulWidget {
-  @override
-  _UserInformationState createState() => _UserInformationState();
-}
-
-class _UserInformationState extends State<UserInformation> {
+class UserInformation extends StatelessWidget {
   final Stream<QuerySnapshot> _usersStream =
   FirebaseFirestore.instance.collection('項目').snapshots();
 
@@ -20,7 +15,7 @@ class _UserInformationState extends State<UserInformation> {
     return Scaffold(
       //backgroundColor: Colors.cyan[50],
       appBar: AppBar(
-        title: Text('問題集'),
+        title: const Text('問題集'),
         // leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
 
         centerTitle: true,
@@ -59,14 +54,14 @@ class _UserInformationState extends State<UserInformation> {
               return ListTile(
                 title: Text(data['項目']
                   ,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20,
                     decoration: TextDecoration.underline,
 
 
                   ),
                 ),
                   subtitle:  Text(data['説明']),
-                  leading:  Icon(Icons.check,color: Colors.cyan,),
+                  leading:  const Icon(Icons.check,color: Colors.cyan,),
 
                   onTap: () {
 
